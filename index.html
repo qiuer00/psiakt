@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsiAkt Studio</title>
+    <meta name="description" content="PsiAkt Studio - Where algorithms meet ink.">
+    <style>
+        /* --- CSS Styles --- */
+        :root {
+            --bg-color: #050505;
+            --text-color: #e0e0e0;
+            --accent-color: #aa381e; /* 中国传统朱砂红 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Times New Roman', serif; /* 经典衬线体 */
+            overflow: hidden; /* 禁止滚动 */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 背景画布 */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.6; /* 让背景稍微暗淡，突出文字 */
+        }
+
+        /* 中心内容容器 */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            mix-blend-mode: difference; /* 增强艺术融合感 */
+            animation: fadeIn 3s ease-in-out;
+        }
+
+        /* 品牌标题 */
+        h1 {
+            font-size: 4rem;
+            font-weight: 100;
+            letter-spacing: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 伪元素制作微弱的光晕效果 */
+        h1::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120%;
+            height: 120%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(20px);
+            z-index: -1;
+        }
+
+        /* 副标题/标语 */
+        p.subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 0.3rem;
+            color: #888;
+            font-family: 'Courier New', Courier, monospace; /* 等宽字体体现科技感 */
+            margin-top: 1.5rem;
+            opacity: 0.8;
+        }
+
+        /* 红色印章点缀 */
+        .seal {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            margin: 0 15px;
+            box-shadow: 0 0 10px var(--accent-color);
+            animation: pulse 4s infinite;
+        }
+
+        /* 底部版权/状态 */
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.7rem;
+            color: #444;
+            letter-spacing: 0.1rem;
+            font-family: sans-serif;
+            z-index: 10;
+        }
+
+        /* 动画定义 */
+        @keyframes fadeIn {
+            from { opacity: 0; filter: blur(10px); transform: scale(0.95); }
+            to { opacity: 1; filter: blur(0); transform: scale(1); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+            100% { opacity: 0.5; transform: scale(1); }
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; letter-spacing: 0.3rem; }
+            p.subtitle { font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="inkCanvas"></canvas>
+
+    <div class="container">
+        <h1>PsiAkt Studio</h1>
+        <p class="subtitle">
+            INK <span class="seal"></span> ALGORITHM <span class="seal"></span> VOID
+        </p>
+    </div>
+
+    <div class="footer">COMING SOON</div>
+
+    <script>
+        /**
+         * 脚本逻辑：创建一个流场（Flow Field）效果
+         * 模拟水墨在纸上流动的路径，同时也像数据的可视化。
+         */
+        const canvas = document.getElementById('inkCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        const particleCount = 100; // 粒子数量
+        
+        // 初始化画布大小
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+
+        // 粒子类
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = 0;
+                this.vy = 0;
+                this.life = Math.random() * 100 + 50; // 生命周其
+                this.size = Math.random() * 2;
+                // 随机颜色：大部分是白色/灰色，极少量朱砂红
+                if (Math.random() > 0.98) {
+                    this.color = 'rgba(170, 56, 30, 0.5)'; // 朱砂红
+                } else {
+                    this.color = `rgba(255, 255, 255, ${Math.random() * 0.1})`;
+                }
+            }
+
+            update() {
+                // 简单的噪声算法模拟流动
+                // 使用正弦和余弦函数创造波纹般的运动
+                const angle = Math.cos(this.x * 0.005) * Math.sin(this.y * 0.005) * 10;
+                
+                this.vx += Math.cos(angle) * 0.5;
+                this.vy += Math.sin(angle) * 0.5;
+
+                // 摩擦力，防止速度过快
+                this.vx *= 0.95;
+                this.vy *= 0.95;
+
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life--;
+
+                // 边界检查或生命结束，重生
+                if (this.life <= 0 || this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                // 画出拖尾效果
+                ctx.moveTo(this.x - this.vx * 3, this.y - this.vy * 3);
+                ctx.lineTo(this.x, this.y);
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = this.size;
+                ctx.stroke();
+            }
+        }
+
+        // 初始化粒子
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            // 每一帧不完全清除画布，而是覆盖一层半透明的黑色
+            // 这样会形成"留痕"或"水墨晕染"的效果
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+            ctx.fillRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
