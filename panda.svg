@@ -1,26 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg">
-  <!-- 背景透明 -->
-  <g>
-    <!-- 熊猫头轮廓（白色填充） -->
-    <circle cx="32" cy="34" r="24" fill="#ffffff"/>
-    
-    <!-- 黑色的脸 -->
-    <circle cx="32" cy="34" r="20" fill="#000000"/>
-    
-    <!-- 耳朵（黑） -->
-    <circle cx="16" cy="18" r="12" fill="#000000"/>
-    <circle cx="48" cy="18" r="12" fill="#000000"/>
-    
-    <!-- 眼白 -->
-    <circle cx="24" cy="30" r="9" fill="#ffffff"/>
-    <circle cx="40" cy="30" r="9" fill="#ffffff"/>
-    
-    <!-- 眼珠（黑） -->
-    <circle cx="26" cy="32" r="5" fill="#000000"/>
-    <circle cx="42" cy="32" r="5" fill="#000000"/>
-    
-    <!-- 鼻子 -->
-    <ellipse cx="32" cy="40" rx="5" ry="4" fill="#000000"/>
-  </g>
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景透明，全部用纯黑色描边 + 填充，保证缩到16×16也看得清 -->
+  <path d="M32 58c-15.46 0-28-12.54-28-28s12.54-28 28-28 28 12.54 28 28-12.54 28-28 28z" fill="#000"/>
+  <path d="M32 6c13.25 0 24 10.75 24 24s-10.75 24-24 24S8 43.25 8 30 18.75 6 32 6m0-4C16.54 2 4 14.54 4 30s12.54 28 28 28 28-12.54 28-28S47.46 2 32 2z" fill="#fff"/>
+  <!-- 耳朵 -->
+  <circle cx="15" cy="17" r="11" fill="#000"/>
+  <circle cx="49" cy="17" r="11" fill="#000"/>
+  <!-- 眼白 -->
+  <circle cx="23" cy="29" r="9" fill="#fff"/>
+  <circle cx="41" cy="29" r="9" fill="#fff"/>
+  <!-- 眼珠 -->
+  <circle cx="25" cy="31" r="5" fill="#000"/>
+  <circle cx="43" cy="31" r="5" fill="#000"/>
+  <!-- 鼻子 -->
+  <ellipse cx="32" cy="40" rx="6" ry="5" fill="#000"/>
 </svg>
